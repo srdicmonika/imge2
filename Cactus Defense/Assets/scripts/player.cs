@@ -16,7 +16,7 @@ public class player : MonoBehaviour {
 		transform.Translate(Vector3.left* speed * Time.deltaTime);
 	}
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "tower") {
+		if (other.gameObject.tag == "CactusTower") {
 			Destroy (gameObject);
 		}
 	}
