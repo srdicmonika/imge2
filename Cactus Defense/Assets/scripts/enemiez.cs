@@ -16,9 +16,9 @@ public class enemiez : MonoBehaviour {
 		if ( timeLeft < 0 )
 		{
 			timeLeft = 4;
-			Object prefab = AssetDatabase.LoadAssetAtPath("Assets/prefabs.enemiez", typeof(GameObject));
-			GameObject clone = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
-			clone.transform.position = Vector3.one;
+			//Object prefab = AssetDatabase.LoadAssetAtPath("Assets/prefabs.enemiez", typeof(GameObject));
+			//GameObject clone = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+			//clone.transform.position = Vector3.one;
 		}
 	}
 }
