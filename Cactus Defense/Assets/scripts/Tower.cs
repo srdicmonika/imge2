@@ -9,10 +9,11 @@ public class Tower : MonoBehaviour {
     public CactusController.CactusButton actionButton;
 
     private bool canFire = true;
+    private ScoreManager scoreManager;
 
     // Use this for initialization
     void Start () {
-		
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 	}
 	
 	// Update is called once per frame
@@ -25,8 +26,11 @@ public class Tower : MonoBehaviour {
 
     void Fire()
     {
-        StartCoroutine(LockAndUnlockFire());
-        Instantiate(explosionPrefab,transform.position, transform.rotation);
+        if (scoreManager.useEnergy(100))
+        {
+            StartCoroutine(LockAndUnlockFire());
+            Instantiate(explosionPrefab, transform.position, transform.rotation);
+        }
     }
 
     IEnumerator LockAndUnlockFire()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class enemy : MonoBehaviour {
 
+
 	//for cloning
 	public GameObject enemiezPrefab;
 	GameObject enemiezClones;
@@ -17,7 +18,9 @@ public class enemy : MonoBehaviour {
 	public Transform[] waypointList;
 	public int currentWayPoint=0;
 	Transform targetWayPoint;
-	//actual route of enemy
+    //actual route of enemy
+
+    private ScoreManager scoreManager;
 
 	// Use this for initialization
 	void Start () {
@@ -28,8 +31,9 @@ public class enemy : MonoBehaviour {
 		//if (randNr == 2) {
 		//	waypointList [randNr] = GameObject.Find ("spawnpoint2").transform.position;
 		targetWayPoint = waypointList[currentWayPoint];
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -66,6 +70,7 @@ public class enemy : MonoBehaviour {
 			targetWayPoint = waypointList [++currentWayPoint];
 		}
 		if ((other.gameObject.tag == "CactusTower")) {
+            scoreManager.addScore(10);
 			Destroy (gameObject);
 		}
 		if ((other.gameObject.tag == "target")) {
