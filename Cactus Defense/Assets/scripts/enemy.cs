@@ -4,40 +4,71 @@ using UnityEngine;
 
 public class enemy : MonoBehaviour {
 
+	//for cloning
 	public GameObject enemiezPrefab;
 	GameObject enemiezClones;
-	public float timeLeft;
 	//sets random spawnpoint
-	public int speed;
+	public float speed;
+	//for timer
+	public float timeLeft;
+	//sets random number
 	int randNr;
-	//sets target of enemies, where they want to go!
-	GameObject target;
+	//array of all waypoints(set in inspector)
+	public Transform[] waypointList;
+	public int currentWayPoint=0;
+	Transform targetWayPoint;
+	//actual route of enemy
 
 	// Use this for initialization
 	void Start () {
-		
+		//randNr = Random.Range (1, 2);
+		//if (randNr == 1) {
+		//	waypointList [randNr] = GameObject.Find ("spawnpoint1").transform.position;
+
+		//if (randNr == 2) {
+		//	waypointList [randNr] = GameObject.Find ("spawnpoint2").transform.position;
+		targetWayPoint = waypointList[currentWayPoint];
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//player moves towards tower 
-		timeLeft -= Time.deltaTime;
-		if ( timeLeft < 0 )
+		//transform.Translate(Vector3.left* speed * Time.deltaTime); automatic movement in one direction
+		// check if we have somewere to walk
+
+		walk();
+
+	}
+
+	void walk(){
+		// rotate towards the target
+		transform.forward = Vector3.RotateTowards(transform.forward, targetWayPoint.position - transform.position, speed*Time.deltaTime, 0.0f);
+
+		// move towards the target
+		//transform.position = Vector3.MoveTowards(transform.position, targetWayPoint.position,   speed*Time.deltaTime);
+		transform.Translate(Vector3.forward * Time.deltaTime * speed);
+
+		if(transform.position == targetWayPoint.position)
 		{
-			timeLeft = 4;
-			randNr = Random.Range (1, 3);
-			Debug.Log (randNr);
-			if (randNr == 1) {
-				enemiezClones = Instantiate (enemiezPrefab, GameObject.Find("spawnpoint1").transform.position, Quaternion.identity) as GameObject;
-			} 
-			if (randNr == 2) {
-				enemiezClones = Instantiate (enemiezPrefab,GameObject.Find("spawnpoint2").transform.position, Quaternion.identity) as GameObject;
+			Debug.Log ("reach");
+			if (currentWayPoint+1 != null) 
+			{
+				targetWayPoint = waypointList [++currentWayPoint];
 			}
 		}
-		transform.Translate(Vector3.left* speed * Time.deltaTime);
-	}
+	} 
+
+
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "CactusTower") {
+		if (other.gameObject.tag == "waypoint") 
+		{
+			targetWayPoint = waypointList [++currentWayPoint];
+		}
+		if ((other.gameObject.tag == "CactusTower")) {
+			Destroy (gameObject);
+		}
+		if ((other.gameObject.tag == "target")) {
 			Destroy (gameObject);
 		}
 	}
