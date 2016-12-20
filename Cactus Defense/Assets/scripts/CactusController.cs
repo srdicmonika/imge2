@@ -218,7 +218,8 @@ public class CactusController : MonoBehaviour {
                 if (name != "")
                 {
                     Debug.Log("Classified as: " + name);
-                    gestureCallbacks(name);
+                    if(gestureCallbacks != null)
+                        gestureCallbacks(name);
                 }
                     
                 //Debug.Log(String.Format("X: {0}, Y: {1}, Z: {2}", getAcceleration(Acceleration.X), getAcceleration(Acceleration.Y), getAcceleration(Acceleration.Z)));
