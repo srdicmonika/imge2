@@ -26,13 +26,13 @@ public class Tower : MonoBehaviour {
     void Fire()
     {
         StartCoroutine(LockAndUnlockFire());
-        Instantiate(explosionPrefab, transform);
+        Instantiate(explosionPrefab,transform.position, transform.rotation);
     }
 
     IEnumerator LockAndUnlockFire()
     {
         canFire = false;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.9f);
         canFire = true;
     }
 }
