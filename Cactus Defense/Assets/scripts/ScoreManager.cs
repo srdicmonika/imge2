@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour {
     public int scr;
     public int enrg;
-    public CactusController cactusController;
+    private CactusController cactusController;
     public CactusController.RVControl energyChargeControl;
 
     // Wie viel ändert der Drehknopf Wert momentan (Änderung pro Sekunde)?
@@ -23,6 +23,7 @@ public class ScoreManager : MonoBehaviour {
 
     void Start()
     {
+        cactusController = FindObjectOfType<CactusController>();
         lastRotateValue = cactusController.getRVValue(energyChargeControl);
     }
 
