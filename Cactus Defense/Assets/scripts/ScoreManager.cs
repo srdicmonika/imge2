@@ -40,7 +40,7 @@ public class ScoreManager : MonoBehaviour {
         if (energyChangeRate > 2)
         {
             //addEnergy((int)(energyChangeRate * 2));
-            addEnergy((int)(energyChangeRate * 0.2));
+            addEnergy((int)(energyChangeRate * 0.3));
         }
     }
 
