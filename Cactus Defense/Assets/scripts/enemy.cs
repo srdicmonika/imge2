@@ -41,7 +41,7 @@ public class enemy : MonoBehaviour {
 
 		targetWayPoint = waypointList [1];
 
-        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
 
     }
 	
