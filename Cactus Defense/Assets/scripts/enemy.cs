@@ -21,16 +21,26 @@ public class enemy : MonoBehaviour {
     //actual route of enemy
 
     private ScoreManager scoreManager;
-
+	private spawnManager spawnmanager;
 	// Use this for initialization
 	void Start () {
+		spawnmanager = GameObject.FindObjectOfType<spawnManager> ();
 		//randNr = Random.Range (1, 2);
 		//if (randNr == 1) {
 		//	waypointList [randNr] = GameObject.Find ("spawnpoint1").transform.position;
 
 		//if (randNr == 2) {
 		//	waypointList [randNr] = GameObject.Find ("spawnpoint2").transform.position;
-		targetWayPoint = waypointList[currentWayPoint];
+
+		int numSpawnpoints = 2;
+		waypointList = spawnmanager.genWay;
+
+		for (int i = 1; i < 3; i++) {
+			waypointList[i] = spawnmanager.AllSpawnPoints[i, Random.Range(0,numSpawnpoints)].transform;
+		}
+
+		targetWayPoint = waypointList [1];
+
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 
     }
@@ -55,10 +65,11 @@ public class enemy : MonoBehaviour {
 
 		if(transform.position == targetWayPoint.position)
 		{
+			currentWayPoint++;
 			Debug.Log ("reach");
-			if (currentWayPoint+1 != null) 
+			if (waypointList.Length > currentWayPoint) 
 			{
-				targetWayPoint = waypointList [++currentWayPoint];
+				targetWayPoint = waypointList [currentWayPoint];
 			}
 		}
 	} 
