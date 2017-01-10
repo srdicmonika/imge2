@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour {
     public int scr;
     public int enrg;
+    public int life;
     private CactusController cactusController;
     public CactusController.RVControl energyChargeControl;
 
@@ -15,9 +16,11 @@ public class ScoreManager : MonoBehaviour {
     void OnGUI()
     {
 
-        GUI.Box(new Rect(30, Screen.height/3- 10, 100, 30), "Score: " + scr);
+        GUI.Box(new Rect(30, Screen.height/4- 10, 100, 30), "Score: " + scr);
 
-        GUI.Box(new Rect(30, Screen.height * 2 / 3 - 10, 100, 30),"Energy:" + enrg);
+        GUI.Box(new Rect(30, Screen.height * 2 / 4 - 10, 100, 30),"Energy:" + enrg);
+
+        GUI.Box(new Rect(30, Screen.height * 3 / 4 - 10, 100, 30), "Life: " + life);
 
     }
 
