@@ -39,7 +39,8 @@ public class ScoreManager : MonoBehaviour {
         lastRotateValue = newRotateValue;
         if (energyChangeRate > 2)
         {
-            addEnergy((int)(energyChangeRate * 2));
+            //addEnergy((int)(energyChangeRate * 2));
+            addEnergy((int)(energyChangeRate * 0.2));
         }
     }
 
