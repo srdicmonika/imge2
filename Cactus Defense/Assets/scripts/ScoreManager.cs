@@ -65,4 +65,8 @@ public class ScoreManager : MonoBehaviour {
     {
         enrg += amount;
     }
+    public int decrementLife()
+    {
+        return life--;
+    }
 }

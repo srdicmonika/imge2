@@ -35,7 +35,7 @@ public class enemy : MonoBehaviour {
 		int numSpawnpoints = 2;
 		waypointList = spawnmanager.genWay;
 
-		for (int i = 1; i < 3; i++) {
+		for (int i = 1; i < 4; i++) {
 			waypointList[i] = spawnmanager.AllSpawnPoints[i, Random.Range(0,numSpawnpoints)].transform;
 		}
 
@@ -86,6 +86,7 @@ public class enemy : MonoBehaviour {
 		}
 		if ((other.gameObject.tag == "target")) {
 			Destroy (gameObject);
+            scoreManager.decrementLife();
 		}
 	}
 }
