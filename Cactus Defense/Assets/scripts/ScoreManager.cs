@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour {
     public int scr;
@@ -65,8 +66,11 @@ public class ScoreManager : MonoBehaviour {
     {
         enrg += amount;
     }
-    public int decrementLife()
+    public void decrementLife()
     {
-        return life--;
+        if (life == 0)
+            //load scene
+            SceneManager.LoadScene(2);
+         life--;
     }
 }
