@@ -11,6 +11,14 @@ public class ScoreManager : MonoBehaviour {
     public CactusController.RVControl energyChargeControl;
     public ParticleSystem particle;
 
+    //spawn manager, to change spawn times
+    public spawnManager spawner;
+    float startTime;
+    bool cap = false;
+
+    //level counter
+    private int lvl;
+
     // Wie viel ändert der Drehknopf Wert momentan (Änderung pro Sekunde)?
     private float energyChangeRate = 0;
     private float lastRotateValue;
@@ -28,6 +36,8 @@ public class ScoreManager : MonoBehaviour {
 
     void Start()
     {
+        spawner = FindObjectOfType<spawnManager>();
+        startTime = spawner.timeLeft;
         cactusController = FindObjectOfType<CactusController>();
         lastRotateValue = cactusController.getRVValue(energyChargeControl);
     }
@@ -54,6 +64,9 @@ public class ScoreManager : MonoBehaviour {
     public void addScore(int amount)
     {
         scr += amount;
+        
+        if (!cap && scr > lvl *100)
+            increaseLvl();
     }
 
     public bool useEnergy(int amount)
@@ -79,5 +92,13 @@ public class ScoreManager : MonoBehaviour {
     public int getEnergy()
     {
         return enrg;
+    }
+    public void increaseLvl()
+    {
+        lvl++;
+        spawner.setTimeLeft(startTime - lvl * 0.2f);
+        if (spawner.timeLeft <= 0.4f)
+            cap = true;
+        Debug.Log("LevelUp, Time: "+spawner.timeLeft);
     }
 }
