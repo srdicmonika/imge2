@@ -136,7 +136,7 @@ public class enemy : MonoBehaviour {
             }
             if ((other.gameObject.tag == "target"))
             {
-                RemoveEnemyAndShield(true);
+                RemoveEnemyAndShield();
                 scoreManager.decrementLife();
             }
             if (other.gameObject.tag == "GestureWave")
@@ -163,21 +163,14 @@ public class enemy : MonoBehaviour {
     IEnumerator DestroyLater(float time)
     {
         yield return new WaitForSeconds(time);
-        Destroy(gameObject);
+        RemoveEnemyAndShield();
     }
 
-    private void RemoveEnemyAndShield(bool instantDestroy = false)
-    {
-        if(instantDestroy || shieldObject == null)
-        {
-            Destroy(gameObject);
-        }
-        else 
-        {
+    private void RemoveEnemyAndShield()
+    { 
+            gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Renderer>().enabled = false;
             dead = true;
-        }
-        
     }
 
     public void AddShield()
