@@ -52,7 +52,7 @@ public class CactusController : MonoBehaviour {
     private StreamProcessor sp = new StreamProcessor();
     private Text receivedDataText;
     // Values of the sliders in [0, 1]
-    private float[] rvValues;
+	private float[] rvValues = new float[4];
     // Pressed buttons (use bitmask to check for pressed buttons)
     private int cactusButtonVal;
     // Remaining rumble time
@@ -101,7 +101,10 @@ public class CactusController : MonoBehaviour {
             gestureLibrary[gestureName] = new GestureModel();
             gestureLibrary[gestureName].load(fileName);
         }
+
+		ResetLEDs ();
     }
+
 	
     void FixedUpdate()
     {
@@ -302,6 +305,15 @@ public class CactusController : MonoBehaviour {
         bool on = ledStatus[(int)led] == 1 ? false : true;
         setLED(led, on);
     }
+
+
+	public void ResetLEDs(){
+		ledStatus = new int[]{ 1, 1, 1, 1 };
+		setLED (CactusController.LED.BLUE, false);
+		setLED (CactusController.LED.RED, false);
+		setLED (CactusController.LED.YELLOW, false);
+		setLED (CactusController.LED.GREEN, false);
+	}
 
     public void addGestureCallback(Action<string> callback)
     {

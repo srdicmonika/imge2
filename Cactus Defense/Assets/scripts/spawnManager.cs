@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,17 +31,24 @@ public class spawnManager : MonoBehaviour {
         //wir setzen hierarchie der Wege
         int steps = allSpawnPoints.GetLength(0);
         int maxSpawns = allSpawnPoints.GetLength(1);
-        for (int i = 0; i < steps; i++)
+        try
         {
-            for(int o = 0; o < maxSpawns; o++)
+            for (int i = 0; i < steps; i++)
             {
-                Transform t = transform.FindChild("spawnpoint"+i+"-"+o);
-                if (t == null)
-                    break;
-                allSpawnPoints[i, o] = t.gameObject;
+                for (int o = 0; o < maxSpawns; o++)
+                {
+                    Transform t = transform.FindChild("spawnpoint" + i + "-" + o);
+                    if (t == null)
+                        break;
+                    allSpawnPoints[i, o] = t.gameObject;
+                }
             }
+        } catch(Exception e)
+        {
+            Debug.LogError(e);
         }
-        allSpawnPoints[0, 0] = transform.GetChild(0).gameObject;
+        
+        /*allSpawnPoints[0, 0] = transform.GetChild(0).gameObject;
         allSpawnPoints[0, 1] = transform.GetChild (1).gameObject;
         allSpawnPoints[0, 2] = transform.GetChild(2).gameObject;
         allSpawnPoints[0, 3] = transform.GetChild(3).gameObject;
@@ -49,7 +57,7 @@ public class spawnManager : MonoBehaviour {
 		allSpawnPoints [2, 0] = transform.GetChild (6).gameObject;
 		allSpawnPoints [2, 1] = transform.GetChild (7).gameObject;
         allSpawnPoints[3, 0] = transform.GetChild(8).gameObject;
-        allSpawnPoints[3, 1] = transform.GetChild(9).gameObject;
+        allSpawnPoints[3, 1] = transform.GetChild(9).gameObject;*/
        
 
         //for (int i = 0; i < transform.childCount; i++) {
@@ -73,7 +81,7 @@ public class spawnManager : MonoBehaviour {
             Transform spawnpoint = null;
             while(spawnpoint == null)
             {
-                randNr = Random.Range(0, 4);
+                randNr = UnityEngine.Random.Range(0, 4);
                 spawnpoint = allSpawnPoints[0, randNr].transform;
             }
             
@@ -86,7 +94,7 @@ public class spawnManager : MonoBehaviour {
             {
                 enemyClone.GetComponent<enemy>().AddShield();
                 // Alle 7 - 15 Sekunden neuen Enemy mit Shield spawnen
-                shieldTimer = 7f + Random.value * 8;
+                shieldTimer = 7f + UnityEngine.Random.value * 8;
             }
 
 			timer = timeLeft;

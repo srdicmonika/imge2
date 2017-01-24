@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour {
     private CactusController cactusController;
     public CactusController.RVControl energyChargeControl;
     public ParticleSystem particle;
+	private int secretEnergyCount = 400;
 
     //spawn manager, to change spawn times
     public spawnManager spawner;
@@ -40,13 +41,20 @@ public class ScoreManager : MonoBehaviour {
         startTime = spawner.timeLeft;
         cactusController = FindObjectOfType<CactusController>();
         lastRotateValue = cactusController.getRVValue(energyChargeControl);
+		Reset();
     }
 
     void Update()
     {
         checkEnergyCharge();
-        enrg = (int)Mathf.Clamp((float)enrg, 0f, 100f);
     }
+
+	void Reset(){
+		scr = 0;
+		enrg = 100;
+		life = 100;
+		cactusController.ResetLEDs();
+	}
 
     private void checkEnergyCharge()
     {
@@ -80,7 +88,36 @@ public class ScoreManager : MonoBehaviour {
 
     public void addEnergy(int amount)
     {
-        enrg += amount;
+		if (enrg < 100) {
+			int oldEnrg = enrg;
+			enrg += amount;
+			if (enrg > 100)
+				enrg = 100;
+
+			int changed = enrg - oldEnrg;
+				//secretEnergyCount += amount;
+				//Debug.Log ("secretVar:"+secretEnergyCount);
+			secretEnergyCount+= changed;
+			if (secretEnergyCount >= 100) {
+				cactusController.setLED (CactusController.LED.BLUE, true);
+			}
+			if (secretEnergyCount >= 200) {
+				cactusController.setLED (CactusController.LED.RED, true);
+			}
+			if (secretEnergyCount >= 300) {
+				cactusController.setLED (CactusController.LED.YELLOW, true);
+			}
+			if (secretEnergyCount >= 400) {
+				cactusController.setLED (CactusController.LED.GREEN, true);
+			}
+
+			//secretEnergyCount = (100- enrg);
+			//Debug.Log ("Amount"+amount);
+			//secretEnergyCount += amount;
+			Debug.Log ("SecretVar"+secretEnergyCount);
+			Debug.Log ("Etatsächliche Energie"+enrg);
+		}
+
     }
     public void decrementLife()
     {
@@ -101,4 +138,12 @@ public class ScoreManager : MonoBehaviour {
             cap = true;
         Debug.Log("LevelUp, Time: "+spawner.timeLeft);
     }
+
+	public bool SuperMove(){
+		return secretEnergyCount >= 400;
+	}
+
+	public void ResetSecretEnergy(){
+		secretEnergyCount = 0;
+	}
 }

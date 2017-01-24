@@ -9,6 +9,7 @@ public class Tower : MonoBehaviour {
     public CactusController.CactusButton actionButton;
     public GameObject gestureWavePrefab;
     public string gestureName;
+    public GameObject superMove;
 
     private bool canFire = true;
     private ScoreManager scoreManager;
@@ -61,7 +62,16 @@ public class Tower : MonoBehaviour {
     {
         if(gesture == gestureName)
         {
-            Instantiate(gestureWavePrefab, transform.position, Quaternion.identity);
+            if (scoreManager.SuperMove())
+            {
+                scoreManager.ResetSecretEnergy();
+                cactusController.ResetLEDs();
+                Instantiate(superMove, transform.position, Quaternion.identity);
+            } else
+            {
+                Instantiate(gestureWavePrefab, transform.position, Quaternion.identity);
+            }
+            
         }
     }
 }

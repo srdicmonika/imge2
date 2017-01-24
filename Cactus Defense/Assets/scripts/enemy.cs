@@ -34,9 +34,11 @@ public class enemy : MonoBehaviour {
     private float deadAnimationTime = 2f;
     private float deadFor = 0f;
 
+
     private bool initialized = false;
-	// Use this for initialization
-	void Start () {
+    private bool flyingAway = false;
+    // Use this for initialization
+    void Start () {
 		spawnmanager = GameObject.FindObjectOfType<spawnManager> ();
 		//randNr = Random.Range (1, 2);
 		//if (randNr == 1) {
@@ -87,7 +89,8 @@ public class enemy : MonoBehaviour {
             }
         }
 
-		walk();
+        if(!flyingAway)
+            walk();
 
 	}
 
@@ -143,8 +146,25 @@ public class enemy : MonoBehaviour {
                     DestroyShield();
                 }
             }
+            if (other.gameObject.tag == "SpecialMove")
+            {
+                scoreManager.addScore(10);
+                flyingAway = true;
+                Rigidbody rigid = gameObject.GetComponent<Rigidbody>();
+                rigid.isKinematic = false;
+                rigid.useGravity = true;
+                rigid.AddForce((Vector3.Normalize(transform.position - other.gameObject.transform.position) + Vector3.up) * 500);
+                StartCoroutine(DestroyLater(5f));
+            }
+
         }
-	}
+    }
+
+    IEnumerator DestroyLater(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
+    }
 
     private void RemoveEnemyAndShield(bool instantDestroy = false)
     {
