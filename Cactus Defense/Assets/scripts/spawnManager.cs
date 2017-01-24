@@ -16,6 +16,7 @@ public class spawnManager : MonoBehaviour {
     //make public
     public float timeLeft;
     float timer;
+    float shieldTimer = 2f;
     //prefab
     public GameObject enemyClonePrefab;
 	//tatsächlicher Clone
@@ -51,6 +52,7 @@ public class spawnManager : MonoBehaviour {
 	void Update () {
         // we need to make 
         timer -= Time.deltaTime;
+        shieldTimer -= Time.deltaTime;
 		if (timer < 0) {
 			//jedes Mal wenn Timer abläuft dann 
 			randNr = Random.Range (0, 2);
@@ -58,6 +60,14 @@ public class spawnManager : MonoBehaviour {
 			generatedWay = new Transform[allSpawnPoints.Length];
 			generatedWay[0] = allSpawnPoints[0, randNr].transform;
 			enemyClone = Instantiate(enemyClonePrefab, generatedWay[0].transform.position, Quaternion.identity) as GameObject;
+
+            // Füge Shield zum Enemy hinzu
+            if(shieldTimer <= 0)
+            {
+                enemyClone.GetComponent<enemy>().AddShield();
+                // Alle 7 - 15 Sekunden neuen Enemy mit Shield spawnen
+                shieldTimer = 7f + Random.value * 8;
+            }
 
 			timer = timeLeft;
 		}

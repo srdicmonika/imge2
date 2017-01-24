@@ -7,6 +7,9 @@ public class enemy : MonoBehaviour {
 
 	//for cloning
 	public GameObject enemiezPrefab;
+    public GameObject shieldPrefab;
+    GameObject shieldObject;
+    bool shield = false;
 	GameObject enemiezClones;
 	//sets random spawnpoint
 	public float speed;
@@ -81,13 +84,40 @@ public class enemy : MonoBehaviour {
 			targetWayPoint = waypointList [++currentWayPoint];
 		}
 		if ((other.gameObject.tag == "CactusTower")) {
-            scoreManager.addScore(10);
-			Destroy (gameObject);
+            if (!shield)
+            {
+                scoreManager.addScore(10);
+                Destroy(gameObject);
+            }
 		}
 		if ((other.gameObject.tag == "target")) {
 			Destroy (gameObject);
             scoreManager.decrementLife();
 		}
+        if(other.gameObject.tag == "GestureWave")
+        {
+            if (shield)
+            {
+                DestroyShield();
+            }
+        }
 	}
+
+    public void AddShield()
+    {
+        shield = true;
+        shieldObject = Instantiate(shieldPrefab, gameObject.transform.position + Vector3.forward * 0.5f, Quaternion.Euler(90, 0, 0), gameObject.transform);
+    }
+
+    public void DestroyShield()
+    {
+        GameObject emptyParentObject = new GameObject();
+        emptyParentObject.transform.position = shieldObject.transform.position;
+        shieldObject.transform.SetParent(emptyParentObject.transform);
+        shield = false;
+        shieldObject.GetComponent<Animator>().SetTrigger("Destroyed");
+        //Destroy(shieldObject);
+    }
+
 }
 
