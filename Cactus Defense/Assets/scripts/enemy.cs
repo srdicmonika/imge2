@@ -159,7 +159,7 @@ public class enemy : MonoBehaviour {
                 rigid.isKinematic = false;
                 rigid.useGravity = true;
                 rigid.AddForce((Vector3.Normalize(transform.position - other.gameObject.transform.position) + Vector3.up) * 500);
-                StartCoroutine(DestroyLater(5f));
+                StartCoroutine(DestroyLater(8f));
             }
 
         }
@@ -168,7 +168,7 @@ public class enemy : MonoBehaviour {
     IEnumerator DestroyLater(float time)
     {
         yield return new WaitForSeconds(time);
-        RemoveEnemyAndShield();
+        RemoveEnemyAndShield(true);
     }
 
     private void RemoveEnemyAndShield(bool removeImmediately = false)
