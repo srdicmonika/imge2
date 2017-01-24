@@ -105,4 +105,10 @@ public class spawnManager : MonoBehaviour {
 		}
 
 	}
+
+    public void setTimeLeft(float n)
+    {
+        timeLeft = n;
+    }
+
 }
