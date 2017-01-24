@@ -9,7 +9,7 @@ public class spawnManager : MonoBehaviour {
 	// four entry pos 
 	// two middle pos 
 	//all points
-	private GameObject[,] allSpawnPoints = new GameObject[6,2];
+	private GameObject[,] allSpawnPoints = new GameObject[4,4];
 	//way of enemy
 	private Transform[] generatedWay;
 	int randNr;
@@ -26,16 +26,30 @@ public class spawnManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//get all children / spawnpoints
-		//wir setzen hierarchie der Wege
-		allSpawnPoints [0, 0] = transform.GetChild (0).gameObject;
-		allSpawnPoints[0, 1] = transform.GetChild (1).gameObject;
-		allSpawnPoints [1, 0] = transform.GetChild (2).gameObject;
-		allSpawnPoints [1, 1] = transform.GetChild (3).gameObject;
-		allSpawnPoints [2, 0] = transform.GetChild (4).gameObject;
-		allSpawnPoints [2, 1] = transform.GetChild (5).gameObject;
-        allSpawnPoints[3, 0] = transform.GetChild(6).gameObject;
-        allSpawnPoints[3, 1] = transform.GetChild(7).gameObject;
+        //get all children / spawnpoints
+        //wir setzen hierarchie der Wege
+        int steps = allSpawnPoints.GetLength(0);
+        int maxSpawns = allSpawnPoints.GetLength(1);
+        for (int i = 0; i < steps; i++)
+        {
+            for(int o = 0; o < maxSpawns; o++)
+            {
+                Transform t = transform.FindChild("spawnpoint"+i+"-"+o);
+                if (t == null)
+                    break;
+                allSpawnPoints[i, o] = t.gameObject;
+            }
+        }
+        allSpawnPoints[0, 0] = transform.GetChild(0).gameObject;
+        allSpawnPoints[0, 1] = transform.GetChild (1).gameObject;
+        allSpawnPoints[0, 2] = transform.GetChild(2).gameObject;
+        allSpawnPoints[0, 3] = transform.GetChild(3).gameObject;
+        allSpawnPoints [1, 0] = transform.GetChild (4).gameObject;
+		allSpawnPoints [1, 1] = transform.GetChild (5).gameObject;
+		allSpawnPoints [2, 0] = transform.GetChild (6).gameObject;
+		allSpawnPoints [2, 1] = transform.GetChild (7).gameObject;
+        allSpawnPoints[3, 0] = transform.GetChild(8).gameObject;
+        allSpawnPoints[3, 1] = transform.GetChild(9).gameObject;
        
 
         //for (int i = 0; i < transform.childCount; i++) {
@@ -54,10 +68,16 @@ public class spawnManager : MonoBehaviour {
         timer -= Time.deltaTime;
         shieldTimer -= Time.deltaTime;
 		if (timer < 0) {
-			//jedes Mal wenn Timer abläuft dann 
-			randNr = Random.Range (0, 2);
-			//in diesem Spawnpoint einen neuen Enemyprefab instanziieren
-			generatedWay = new Transform[allSpawnPoints.Length];
+            //jedes Mal wenn Timer abläuft dann 
+            //in diesem Spawnpoint einen neuen Enemyprefab instanziieren
+            Transform spawnpoint = null;
+            while(spawnpoint == null)
+            {
+                randNr = Random.Range(0, 4);
+                spawnpoint = allSpawnPoints[0, randNr].transform;
+            }
+            
+            generatedWay = new Transform[allSpawnPoints.GetLength(0)];
 			generatedWay[0] = allSpawnPoints[0, randNr].transform;
 			enemyClone = Instantiate(enemyClonePrefab, generatedWay[0].transform.position, Quaternion.identity) as GameObject;
 

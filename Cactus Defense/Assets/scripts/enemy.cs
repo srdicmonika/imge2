@@ -29,6 +29,12 @@ public class enemy : MonoBehaviour {
 
     private ScoreManager scoreManager;
 	private spawnManager spawnmanager;
+
+    private bool dead = false;
+    private float deadAnimationTime = 2f;
+    private float deadFor = 0f;
+
+    private bool initialized = false;
 	// Use this for initialization
 	void Start () {
 		spawnmanager = GameObject.FindObjectOfType<spawnManager> ();
@@ -39,24 +45,47 @@ public class enemy : MonoBehaviour {
 		//if (randNr == 2) {
 		//	waypointList [randNr] = GameObject.Find ("spawnpoint2").transform.position;
 
-		int numSpawnpoints = 2;
+		int numSpawnpoints = 4;
 		waypointList = spawnmanager.genWay;
 
 		for (int i = 1; i < 4; i++) {
-			waypointList[i] = spawnmanager.AllSpawnPoints[i, Random.Range(0,numSpawnpoints)].transform;
+            GameObject g = null;
+            Transform t = null;
+            while (g == null)
+            {
+                g = spawnmanager.AllSpawnPoints[i, Random.Range(0, numSpawnpoints - 1)];
+                if(g != null)
+                    t = g.transform;
+            }
+                
+            waypointList[i] = t;
 		}
 
 		targetWayPoint = waypointList [1];
+        transform.LookAt(targetWayPoint);
 
-		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
-
+        scoreManager = GameObject.FindObjectOfType<ScoreManager>();
+        initialized = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
-		//player moves towards tower 
-		//transform.Translate(Vector3.left* speed * Time.deltaTime); automatic movement in one direction
-		// check if we have somewere to walk
+        //player moves towards tower 
+        //transform.Translate(Vector3.left* speed * Time.deltaTime); automatic movement in one direction
+        // check if we have somewere to walk
+        if (dead)
+        {
+            deadFor += Time.deltaTime;
+            float progress = deadFor / deadAnimationTime;
+            Color c = shieldObject.GetComponent<Renderer>().material.color;
+            c.a = Mathf.Clamp(1 - progress, 0, 1);
+            shieldObject.GetComponent<Renderer>().material.color = c;
+            if (progress >= 1)
+            {
+                Destroy(shieldObject);
+                Destroy(gameObject);
+            }
+        }
 
 		walk();
 
@@ -70,7 +99,7 @@ public class enemy : MonoBehaviour {
 		//transform.position = Vector3.MoveTowards(transform.position, targetWayPoint.position,   speed*Time.deltaTime);
 		transform.Translate(Vector3.forward * Time.deltaTime * speed);
 
-		if(transform.position == targetWayPoint.position)
+		/*if(transform.position == targetWayPoint.position)
 		{
 			currentWayPoint++;
 			Debug.Log ("reach");
@@ -78,36 +107,58 @@ public class enemy : MonoBehaviour {
 			{
 				targetWayPoint = waypointList [currentWayPoint];
 			}
-		}
+		}*/
 	} 
 
 
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "waypoint") 
-		{
-			targetWayPoint = waypointList [++currentWayPoint];
-		}
-		if ((other.gameObject.tag == "CactusTower")) {
-            if (!shield)
-            {
-                Instantiate(particleD,transform.position,transform.rotation);
-                scoreManager.addScore(10);
-                Destroy(gameObject);
-            }
-		}
-		if ((other.gameObject.tag == "target")) {
-            Instantiate(particleT, transform.position, transform.rotation);
-            Destroy (gameObject);
-            scoreManager.decrementLife();
-		}
-        if(other.gameObject.tag == "GestureWave")
+        if(initialized)
         {
-            if (shield)
+            if (other.gameObject.tag == "waypoint")
             {
-                DestroyShield();
+                if (currentWayPoint + 1 < waypointList.Length)
+                {
+                    if (other.gameObject.transform == targetWayPoint || currentWayPoint == 0)
+                        targetWayPoint = waypointList[++currentWayPoint];
+                }
+            }
+            if ((other.gameObject.tag == "CactusTower"))
+            {
+                if (!shield)
+                {
+                Instantiate(particleD,transform.position,transform.rotation);
+                    scoreManager.addScore(10);
+                    RemoveEnemyAndShield();
+                }
+            }
+            if ((other.gameObject.tag == "target"))
+            {
+                RemoveEnemyAndShield(true);
+                scoreManager.decrementLife();
+            }
+            if (other.gameObject.tag == "GestureWave")
+            {
+                if (shield)
+                {
+                    DestroyShield();
+                }
             }
         }
 	}
+
+    private void RemoveEnemyAndShield(bool instantDestroy = false)
+    {
+        if(instantDestroy || shieldObject == null)
+        {
+            Destroy(gameObject);
+        }
+        else 
+        {
+            gameObject.GetComponent<Renderer>().enabled = false;
+            dead = true;
+        }
+        
+    }
 
     public void AddShield()
     {
