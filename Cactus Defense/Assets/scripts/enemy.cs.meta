@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: c957718e9b923a041b09d22694705545
-timeCreated: 1481734921
+timeCreated: 1484660271
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - enemiezPrefab: {fileID: 1994010536467800, guid: 951f283825746614aad3386d249f5cbe,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
