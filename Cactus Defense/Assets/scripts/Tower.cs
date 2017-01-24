@@ -13,8 +13,11 @@ public class Tower : MonoBehaviour {
     private bool canFire = true;
     private ScoreManager scoreManager;
 
+    private TowerTimer timer;
+
     // Use this for initialization
     void Start () {
+        timer = GameObject.Find("TowerTimer").GetComponent<TowerTimer>();
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         if(gestureName != "" && gestureWavePrefab != null)
         {
@@ -33,8 +36,9 @@ public class Tower : MonoBehaviour {
 
     void Fire()
     {
-        if (scoreManager.useEnergy(10))
+        if (timer.getReady() && scoreManager.useEnergy(10))
         {
+            timer.setReady(false);
             StartCoroutine(LockAndUnlockFire());
             Instantiate(explosionPrefab, transform.position, transform.rotation);
         }

@@ -34,6 +34,7 @@ public class ScoreManager : MonoBehaviour {
     void Update()
     {
         checkEnergyCharge();
+        enrg = (int)Mathf.Clamp((float)enrg, 0f, 100f);
     }
 
     private void checkEnergyCharge()

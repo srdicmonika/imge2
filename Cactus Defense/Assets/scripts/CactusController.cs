@@ -93,7 +93,7 @@ public class CactusController : MonoBehaviour {
         }
 
         // Load Gestures
-        string[] gestureNames = { "left", "right", "whip" };
+        string[] gestureNames = { "universal" };
         foreach(string gestureName in gestureNames)
         {
             string fileName = "Assets\\Gestures\\gesture_" + gestureName + ".xml"; // Application.persistentDataPath+"/gesture_"+gestureName+".xml";
