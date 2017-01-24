@@ -23,6 +23,10 @@ public class enemy : MonoBehaviour {
 	Transform targetWayPoint;
     //actual route of enemy
 
+    //for the particlesystem effect
+    public ParticleSystem particleD;
+    public ParticleSystem particleT;
+
     private ScoreManager scoreManager;
 	private spawnManager spawnmanager;
 
@@ -122,6 +126,7 @@ public class enemy : MonoBehaviour {
             {
                 if (!shield)
                 {
+                Instantiate(particleD,transform.position,transform.rotation);
                     scoreManager.addScore(10);
                     RemoveEnemyAndShield();
                 }
