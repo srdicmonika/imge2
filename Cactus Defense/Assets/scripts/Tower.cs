@@ -23,7 +23,6 @@ public class Tower : MonoBehaviour {
         if(gestureName != "" && gestureWavePrefab != null)
         {
             cactusController.addGestureCallback(gestureCallback);
-            StartCoroutine(TestWave());
         }
     }
 	
@@ -50,12 +49,6 @@ public class Tower : MonoBehaviour {
         canFire = false;
         yield return new WaitForSeconds(0.9f);
         canFire = true;
-    }
-
-    IEnumerator TestWave()
-    {
-        yield return new WaitForSeconds(3.5f);
-        gestureCallback("whip");
     }
 
     void gestureCallback(string gesture)

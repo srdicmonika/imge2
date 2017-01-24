@@ -79,9 +79,14 @@ public class enemy : MonoBehaviour {
         {
             deadFor += Time.deltaTime;
             float progress = deadFor / deadAnimationTime;
-            Color c = shieldObject.GetComponent<Renderer>().material.color;
-            c.a = Mathf.Clamp(1 - progress, 0, 1);
-            shieldObject.GetComponent<Renderer>().material.color = c;
+
+            if(shieldObject != null)
+            {
+                Color c = shieldObject.GetComponent<Renderer>().material.color;
+                c.a = Mathf.Clamp(1 - progress, 0, 1);
+                shieldObject.GetComponent<Renderer>().material.color = c;
+            }
+            
             if (progress >= 1)
             {
                 Destroy(shieldObject);
@@ -136,7 +141,7 @@ public class enemy : MonoBehaviour {
             }
             if ((other.gameObject.tag == "target"))
             {
-                RemoveEnemyAndShield();
+                RemoveEnemyAndShield(true);
                 scoreManager.decrementLife();
             }
             if (other.gameObject.tag == "GestureWave")
@@ -166,11 +171,23 @@ public class enemy : MonoBehaviour {
         RemoveEnemyAndShield();
     }
 
-    private void RemoveEnemyAndShield()
+    private void RemoveEnemyAndShield(bool removeImmediately = false)
     { 
+        if(shieldObject == null)
+        {
+            Destroy(gameObject);
+        } else
+        {
+            if (removeImmediately)
+            {
+                Destroy(shieldObject);
+                Destroy(gameObject);
+            }
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Renderer>().enabled = false;
             dead = true;
+        }
+        
     }
 
     public void AddShield()
