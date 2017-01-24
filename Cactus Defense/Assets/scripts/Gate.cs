@@ -34,22 +34,32 @@ public class Gate : MonoBehaviour {
         {
             state = cactusController.getRVValue(DoorKnob);
             //Debug.Log("State: " + state);
-            if (state > 0.9f && !alive)
+            if (state > 0.8f && !alive)
             {
-                transform.GetChild(0).gameObject.SetActive(true);
-                alive = true;
-                StartCoroutine(response());
+                if (scoreManager.useEnergy(20))
+                {
+                    transform.GetChild(0).gameObject.SetActive(true);
+                    alive = true;
+                    StartCoroutine(response());
+                }
             }
-            if (state <= 0.9f && alive)
+            if (state <= 0.8f && alive)
             {
-                transform.GetChild(0).gameObject.SetActive(false);
-                alive = false;
-                StartCoroutine(response());
+                //scoreManager.addEnergy(-20);
+                turnOff();
             }
             if (alive)
             {
-
+                if (!scoreManager.useEnergy(1))
+                    turnOff();
             }
         }
 	}
+
+    void turnOff()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        alive = false;
+        StartCoroutine(response());
+    }
 }

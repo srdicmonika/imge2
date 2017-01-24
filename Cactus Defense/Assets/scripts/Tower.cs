@@ -33,7 +33,7 @@ public class Tower : MonoBehaviour {
 
     void Fire()
     {
-        if (scoreManager.useEnergy(100))
+        if (scoreManager.useEnergy(10))
         {
             StartCoroutine(LockAndUnlockFire());
             Instantiate(explosionPrefab, transform.position, transform.rotation);

@@ -73,4 +73,8 @@ public class ScoreManager : MonoBehaviour {
             SceneManager.LoadScene(2);
          life--;
     }
+    public int getEnergy()
+    {
+        return enrg;
+    }
 }
