@@ -23,6 +23,10 @@ public class enemy : MonoBehaviour {
 	Transform targetWayPoint;
     //actual route of enemy
 
+    //for the particlesystem effect
+    public ParticleSystem particleD;
+    public ParticleSystem particleT;
+
     private ScoreManager scoreManager;
 	private spawnManager spawnmanager;
 	// Use this for initialization
@@ -86,12 +90,14 @@ public class enemy : MonoBehaviour {
 		if ((other.gameObject.tag == "CactusTower")) {
             if (!shield)
             {
+                Instantiate(particleD,transform.position,transform.rotation);
                 scoreManager.addScore(10);
                 Destroy(gameObject);
             }
 		}
 		if ((other.gameObject.tag == "target")) {
-			Destroy (gameObject);
+            Instantiate(particleT, transform.position, transform.rotation);
+            Destroy (gameObject);
             scoreManager.decrementLife();
 		}
         if(other.gameObject.tag == "GestureWave")
