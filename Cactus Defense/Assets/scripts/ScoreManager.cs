@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour {
     public int life;
     private CactusController cactusController;
     public CactusController.RVControl energyChargeControl;
+    public ParticleSystem particle;
 
     // Wie viel ändert der Drehknopf Wert momentan (Änderung pro Sekunde)?
     private float energyChangeRate = 0;
@@ -46,6 +47,7 @@ public class ScoreManager : MonoBehaviour {
         {
             //addEnergy((int)(energyChangeRate * 2));
             addEnergy((int)(energyChangeRate * 0.3));
+            Instantiate(particle);
         }
     }
 
