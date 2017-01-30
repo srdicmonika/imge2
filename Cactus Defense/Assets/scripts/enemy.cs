@@ -79,9 +79,14 @@ public class enemy : MonoBehaviour {
         {
             deadFor += Time.deltaTime;
             float progress = deadFor / deadAnimationTime;
-            Color c = shieldObject.GetComponent<Renderer>().material.color;
-            c.a = Mathf.Clamp(1 - progress, 0, 1);
-            shieldObject.GetComponent<Renderer>().material.color = c;
+
+            if(shieldObject != null)
+            {
+                Color c = shieldObject.GetComponent<Renderer>().material.color;
+                c.a = Mathf.Clamp(1 - progress, 0, 1);
+                shieldObject.GetComponent<Renderer>().material.color = c;
+            }
+            
             if (progress >= 1)
             {
                 Destroy(shieldObject);
@@ -154,7 +159,7 @@ public class enemy : MonoBehaviour {
                 rigid.isKinematic = false;
                 rigid.useGravity = true;
                 rigid.AddForce((Vector3.Normalize(transform.position - other.gameObject.transform.position) + Vector3.up) * 500);
-                StartCoroutine(DestroyLater(5f));
+                StartCoroutine(DestroyLater(8f));
             }
 
         }
@@ -163,17 +168,22 @@ public class enemy : MonoBehaviour {
     IEnumerator DestroyLater(float time)
     {
         yield return new WaitForSeconds(time);
-        Destroy(gameObject);
+        RemoveEnemyAndShield(true);
     }
 
-    private void RemoveEnemyAndShield(bool instantDestroy = false)
-    {
-        if(instantDestroy || shieldObject == null)
+    private void RemoveEnemyAndShield(bool removeImmediately = false)
+    { 
+        if(shieldObject == null)
         {
             Destroy(gameObject);
-        }
-        else 
+        } else
         {
+            if (removeImmediately)
+            {
+                Destroy(shieldObject);
+                Destroy(gameObject);
+            }
+            gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Renderer>().enabled = false;
             dead = true;
         }

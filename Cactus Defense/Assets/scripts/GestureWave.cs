@@ -14,6 +14,7 @@ public class GestureWave : MonoBehaviour {
     float matMaxAlpha;
     float endFadeOutTime;
     Renderer r;
+    bool endTimeReached = false;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +32,12 @@ public class GestureWave : MonoBehaviour {
         float timeNow = Time.time;
         if (endTime <= timeNow)
         {
+            if (!endTimeReached)
+            {
+                endTimeReached = true;
+                gameObject.GetComponent<Collider>().enabled = false;
+            }
+
             if (endFadeOutTime <= timeNow)
                 Destroy(gameObject);
 
