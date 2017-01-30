@@ -29,9 +29,9 @@ public class MainMenuManager : MonoBehaviour {
         if (GUI.Button(buttonRect, "Begin!"))
             SceneManager.LoadScene(1);
         if (GUI.Button(instructionsRect, "Instructions"))
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(3);
         if (GUI.Button(creditsRect, "Credits"))
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(4);
         
     }
 }

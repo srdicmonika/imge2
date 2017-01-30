@@ -52,7 +52,7 @@ public class ScoreManager : MonoBehaviour {
 	void Reset(){
 		scr = 0;
 		enrg = 100;
-		life = 100;
+		life = 15;
 		cactusController.ResetLEDs();
 	}
 
